@@ -1,5 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Loading from "@/app/loading";
+import {Suspense} from "react";
+import CommonLayout from "@/components/common-layout";
+import {ClerkProvider} from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,8 +14,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+      <ClerkProvider>
+          <html lang="en">
+          <body className={inter.className}>
+          <Suspense fallback={<Loading/>}>
+              {/* eslint-disable-next-line react/no-children-prop */}
+              <CommonLayout children={children}/>
+          </Suspense>
+          </body>
+          </html>
+      </ClerkProvider>
   );
 }
