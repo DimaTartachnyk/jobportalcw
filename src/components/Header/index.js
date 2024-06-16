@@ -1,12 +1,13 @@
 'use client'
-
+import React from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {AlignJustify} from "lucide-react"
 import Link from "next/link"
+import {UserButton} from "@clerk/nextjs";
 
 
-function Header() {
+function Header({user, profileInfo}) {
 
     const menuItems = [
         {
@@ -17,12 +18,32 @@ function Header() {
         {
             label: 'Login',
             path: '/sign-in',
-            show: true
+            show: !user
         },
         {
             label: 'Register',
             path: '/sign-up',
-            show: true
+            show: !user
+        },
+        {
+            label: 'Activity',
+            path: '/activity',
+            show: profileInfo?.role === "candidate"
+        },
+        {
+            label: 'Jobs',
+            path: '/jobs',
+            show: user
+        },
+        {
+            label: 'Membership',
+            path: '/membership',
+            show: user
+        },
+        {
+            label: 'Account',
+            path: '/account',
+            show: user
         }
     ]
 
@@ -51,6 +72,7 @@ function Header() {
                                     null
                             )
                         }
+                        <UserButton afterSignOutUrl="/"/>
                     </div>
                 </SheetContent>
             </Sheet>
@@ -62,6 +84,7 @@ function Header() {
                               className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">
                             {menuItem.label}</Link> : null)
                 }
+                <UserButton afterSignOutUrl="/"/>
             </nav>
         </header>
     </div>

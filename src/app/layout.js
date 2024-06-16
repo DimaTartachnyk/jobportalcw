@@ -18,7 +18,6 @@ export default function RootLayout({ children }) {
           <html lang="en">
           <body className={inter.className}>
           <Suspense fallback={<Loading/>}>
-              {/* eslint-disable-next-line react/no-children-prop */}
               <CommonLayout children={children}/>
           </Suspense>
           </body>
