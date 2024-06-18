@@ -3,14 +3,22 @@
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useEffect, useState} from "react";
 import CommonForm from "@/components/common-form";
-import {candidateOnboardFormControls, initialRecruiterFormData, initialCandidateFormData, recruiterOnboardFormControls} from "@/utils";
+import {
+    candidateOnboardFormControls,
+    initialRecruiterFormData,
+    initialCandidateFormData,
+    recruiterOnboardFormControls
+} from "@/utils";
 import {useUser} from "@clerk/nextjs";
 import {createProfileAction} from "@/actions";
-import {createClient} from "@supabase/supabase-js";
+import {createClient} from '@supabase/supabase-js';
+
 
 const supabaseClient = createClient(
     'https://aswgnxiceeviaodfaufj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzd2dueGljZWV2aWFvZGZhdWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg1NjU2MTEsImV4cCI6MjAzNDE0MTYxMX0.90deQ-26SO13kTM2ODDan7iJfCH21K865w92EvTLgW0');
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzd2dueGljZWV2aWFvZGZhdWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg1NjU2MTEsImV4cCI6MjAzNDE0MTYxMX0.90deQ-26SO13kTM2ODDan7iJfCH21K865w92EvTLgW0'
+)
+
 
 function OnBoard() {
 
@@ -23,38 +31,61 @@ function OnBoard() {
     const currentAuthUser = useUser();
     const {user} = currentAuthUser;
 
-    function handleFileChange(event){
+    function handleFileChange(event) {
         event.preventDefault();
         setFile(event.target.files[0])
     }
 
-    async function handleUploadPdfToSupabase(){
+    async function handleUploadPdfToSupabase() {
         const {data, error} = await supabaseClient.storage
+            .from("job-board")
+            .upload(`/public/${file.name}`, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+        console.log(data, error);
+        if (data) {
+            setCandidateFormData({
+                ...candidateFormData,
+                resume: data.path,
+            });
+        }
     }
 
     useEffect(() => {
         if (file) handleUploadPdfToSupabase()
     }, [file]);
 
-    function handleTabChange(value){
+    function handleTabChange(value) {
         setCurrentTab(value);
     }
 
 
-
-    function handleRecruiterFormValid(){
+    function handleRecruiterFormValid() {
         return recruiterFormData &&
             recruiterFormData.name.trim() !== '' &&
             recruiterFormData.companyName.trim() !== '' &&
             recruiterFormData.companyRole.trim() !== ''
     }
-    async function createProfile(){
-        const data = {
-            recruiterInfo : recruiterFormData,
-            role : 'recruiter',
+
+    function handleCandidateFormValid() {
+        return Object.keys(candidateFormData).every(
+            key => candidateFormData[key].trim() !== "")
+    }
+
+    async function createProfile() {
+        const data = currentTab === 'candidate' ? {
+            candidateInfo: candidateFormData,
+            role: 'candidate',
             isPremiumUser: false,
-            userId : user?.id,
-            email : user?.primaryEmailAddress?.emailAddress
+            userId: user?.id,
+            email: user?.primaryEmailAddress?.emailAddress,
+        } : {
+            recruiterInfo: recruiterFormData,
+            role: 'recruiter',
+            isPremiumUser: false,
+            userId: user?.id,
+            email: user?.primaryEmailAddress?.emailAddress
         }
 
         await createProfileAction(data, '/onboard')
@@ -76,21 +107,23 @@ function OnBoard() {
                 </div>
                 <TabsContent value="candidate">
                     <CommonForm
-                    formControls={candidateOnboardFormControls}
-                    buttonText={'Onboard as candidate'}
-                    formData={candidateFormData}
-                    setFormData={setCandidateFormData}
-                    handleFileChange={handleFileChange}
+                        action={createProfile}
+                        formControls={candidateOnboardFormControls}
+                        buttonText={'Onboard as candidate'}
+                        formData={candidateFormData}
+                        setFormData={setCandidateFormData}
+                        handleFileChange={handleFileChange}
+                        isBtnDisabled={!handleCandidateFormValid()}
                     />
                 </TabsContent>
                 <TabsContent value="recruiter">
                     <CommonForm
-                    formControls={recruiterOnboardFormControls}
-                    buttonText={'Onboard as recruiter'}
-                    formData={recruiterFormData}
-                    setFormData={setRecruiterFormData}
-                    isBtnDisabled={!handleRecruiterFormValid()}
-                    action={createProfile}
+                        formControls={recruiterOnboardFormControls}
+                        buttonText={'Onboard as recruiter'}
+                        formData={recruiterFormData}
+                        setFormData={setRecruiterFormData}
+                        isBtnDisabled={!handleRecruiterFormValid()}
+                        action={createProfile}
                     />
                 </TabsContent>
             </Tabs>

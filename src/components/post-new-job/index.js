@@ -16,9 +16,10 @@ function PostNewJob({profileInfo, user}) {
 
     console.log(jobFormData)
 
-    function handlePostNewBtnValid(){
+    function handlePostNewBtnValid() {
         return Object.keys(jobFormData).every(
-            (control)=> jobFormData[control].trim() !== '');
+            (control) => jobFormData[control] && jobFormData[control].trim() !== ""
+        );
     }
 
     async function createNewJob(){
