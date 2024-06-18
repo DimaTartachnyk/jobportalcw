@@ -3,6 +3,7 @@ import connectToDB from "@/database";
 import Profile from "@/models/profile";
 import {revalidatePath} from "next/cache";
 import Job from "@/models/job";
+import Application from "@/models/application";
 
 //create profile action
 
@@ -40,7 +41,7 @@ export async function fetchJobsForRecruiterAction(id){
 //candidate
 export async function fetchJobsForCandidateAction(filterParams = {}) {
     await connectToDB();
-    const result = await Job.find(filterParams);
+    const result = await Job.find({});
     // let updatedParams = {};
     // Object.keys(filterParams).forEach((filterKey) => {
     //     updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
@@ -52,3 +53,29 @@ export async function fetchJobsForCandidateAction(filterParams = {}) {
 
     return JSON.parse(JSON.stringify(result));
 }
+
+//create job application
+export async function createJobApplicationAction(data, pathToRevalidate) {
+    await connectToDB();
+    await Application.create(data);
+    revalidatePath(pathToRevalidate);
+}
+
+//fetch  job applications - candidate
+export async function fetchJobApplicationsForCandidate(candidateID) {
+    await connectToDB();
+    const result = await Application.find({ candidateUserID: candidateID });
+
+    return JSON.parse(JSON.stringify(result));
+}
+
+//fetch  job applications - recruiter
+export async function fetchJobApplicationsForRecruiter(recruiterID) {
+    await connectToDB();
+    const result = await Application.find({ recruiterUserID: recruiterID });
+
+    return JSON.parse(JSON.stringify(result));
+}
+
+
+// update job applications

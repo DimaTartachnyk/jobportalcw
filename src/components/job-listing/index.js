@@ -5,7 +5,7 @@ import PostNewJob from "@/components/post-new-job";
 import RecruiterJobCard from "@/components/recruiter-job-card";
 import CandidateJobCard from "@/components/candidate-job-card";
 
-function JobListing({user, profileInfo, jobList}) {
+function JobListing({user, profileInfo, jobList, jobApplications}) {
     return (
         <div>
             <div className="mx-auto max-w-7xl">
@@ -26,10 +26,10 @@ function JobListing({user, profileInfo, jobList}) {
                                         ? jobList.map((jobItem) =>
                                             profileInfo?.role === "candidate" ? (
                                                 // eslint-disable-next-line react/jsx-key
-                                                <CandidateJobCard jobItem={jobItem}/>
+                                                <CandidateJobCard profileInfo={profileInfo} jobItem={jobItem} jobApplications={jobApplications}/>
                                             ) : (
                                                 // eslint-disable-next-line react/jsx-key
-                                                <RecruiterJobCard jobItem={jobItem} profileInfo={profileInfo}/>
+                                                <RecruiterJobCard profileInfo={profileInfo} jobItem={jobItem} jobApplications={jobApplications}/>
                                             )) : null}
                                 </div>
                             </div>

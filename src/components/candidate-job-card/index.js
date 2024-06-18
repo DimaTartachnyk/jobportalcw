@@ -15,9 +15,25 @@ import {
 import CommonCard from "@/components/common-card";
 import JobIcon from "@/components/job-icon";
 import {Button} from "@/components/ui/button";
+import {createJobApplicationAction} from "@/actions";
 
-function CandidateJobCard({jobItem}) {
+function CandidateJobCard({jobItem, profileInfo, jobApplications}) {
     const [showJobDetailsDrawer, setShowJobDetailsDrawer] = useState(false);
+    console.log(jobApplications, 'jobApplications')
+
+    async function handleJobApply() {
+        await createJobApplicationAction({
+            recruiterUserID: jobItem.recruiterId,
+            name: profileInfo?.candidateInfo?.name,
+            email: profileInfo?.email,
+            candidateUserID: profileInfo?.userId,
+            status: ['Applied'],
+            jobID: jobItem?._id,
+            jobAppliedDate: new Date().toLocaleDateString(),
+        }, '/jobs')
+        setShowJobDetailsDrawer(false)
+    }
+
     return (
         <Fragment>
             <Drawer open={showJobDetailsDrawer} onOpenChange={setShowJobDetailsDrawer}>
@@ -40,10 +56,18 @@ function CandidateJobCard({jobItem}) {
                                 className="text-4xl font-extrabold text-gray-800">{jobItem?.title}</DrawerTitle>
                             <div className="flex gap-3">
                                 <Button
-                                    className=" dark:bg-[#fffa27] flex h-11 items-center justify-center px-5">Apply</Button>
+                                    onClick={handleJobApply}
+                                    disabled={
+                                        jobApplications.findIndex((item) => item.jobID === jobItem?._id) > -1 /*? true : false*/
+                                    }
+                                    className="disabled:opacity-65 flex h-11 items-center justify-center px-5">
+                                    {jobApplications.findIndex((item) => item.jobID === jobItem?._id) > -1 ? "Applied" : "Apply"}
+                                </Button>
                                 <Button
-                                    className=" dark:bg-[#fffa27] flex h-11 items-center justify-center px-5"
-                                    onClick={() => setShowJobDetailsDrawer(false)}>Cancel</Button>
+                                    className=" flex h-11 items-center justify-center px-5"
+                                    onClick={() => setShowJobDetailsDrawer(false)}>
+                                    Cancel
+                                </Button>
                             </div>
                         </div>
                     </DrawerHeader>
