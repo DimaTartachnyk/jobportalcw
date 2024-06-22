@@ -1,5 +1,6 @@
 import {fetchJobApplicationsForCandidate, fetchJobsForCandidateAction} from "@/actions";
 import {currentUser} from "@clerk/nextjs/server";
+import CandidateActivity from "@/components/candidate-activity";
 
 
 export default async function Activity(){
@@ -7,9 +8,5 @@ export default async function Activity(){
     const jobList = await fetchJobsForCandidateAction();
     const jobApplicants = await fetchJobApplicationsForCandidate(user?.id);
 
-    return(
-        <div>
-            <h1>Activity</h1>
-        </div>
-    )
+    return <CandidateActivity jobList={jobList} jobApplicants={jobApplicants} />;
 }

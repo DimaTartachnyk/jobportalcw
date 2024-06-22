@@ -62,26 +62,26 @@ function Header({user, profileInfo}) {
                     </Link>
                     <div className="grid gap-2 py-6">
                         {
-
                             menuItems.map(menuItem =>
                                 menuItem.show ?
-
-                                    <Link href={menuItem.path}
+                                    <Link key={menuItem.id} href={menuItem.path}
                                           className="flex w-full items-center py-2 text-lg font-semibold">{menuItem.label}</Link>
-                                    :
-                                    null
+                                    : null
                             )
                         }
                         <UserButton afterSignOutUrl="/"/>
                     </div>
                 </SheetContent>
             </Sheet>
-            <Link href={'/'} className="hidden lg:flex mr-6">JOPPORTALCW</Link>
+            <Link href={'/'} className="hidden lg:flex mr-6">JOBPORTALCW</Link>
             <nav className="ml-auto hidden lg:flex gap-6">
                 {
                     menuItems.map(menuItem => menuItem.show ?
-                        <Link href={menuItem.path}
-                              className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">
+                        <Link
+                            key={menuItem.id}
+                            href={menuItem.path}
+                            onClick={()=>sessionStorage.removeItem("filterParams")}
+                            className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">
                             {menuItem.label}</Link> : null)
                 }
                 <UserButton afterSignOutUrl="/"/>
@@ -91,3 +91,29 @@ function Header({user, profileInfo}) {
 }
 
 export default Header;
+
+
+
+
+
+
+
+
+
+
+//Зробити коміт!!! "UpdateActivityPage&FilterOnJobsPage"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -42,15 +42,12 @@ export async function fetchJobsForRecruiterAction(id) {
 //candidate
 export async function fetchJobsForCandidateAction(filterParams = {}) {
     await connectToDB();
-    const result = await Job.find({});
-    // let updatedParams = {};
-    // Object.keys(filterParams).forEach((filterKey) => {
-    //     updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
-    // });
-    // console.log(updatedParams, "updatedParams");
-    // const result = await Job.find(
-    //     filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {}
-    // );
+    let updatedParams = {};
+    Object.keys(filterParams).forEach((filterKey) => {
+        updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
+    });
+    console.log(updatedParams, "updatedParams");
+    const result = await Job.find(filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {});
 
     return JSON.parse(JSON.stringify(result));
 }
@@ -95,6 +92,14 @@ export async function updateJobApplicationAction(data, pathToRevalidate) {
 export async function getCandidateDetailsByIDAction(currentCandidateID) {
     await connectToDB();
     const result = await Profile.findOne({userId: currentCandidateID});
+
+    return JSON.parse(JSON.stringify(result));
+}
+
+//create filter categories
+export async function createFilterCategoryAction() {
+    await connectToDB();
+    const result = await Job.find({});
 
     return JSON.parse(JSON.stringify(result));
 }
