@@ -73,7 +73,7 @@ function Header({user, profileInfo}) {
                     </div>
                 </SheetContent>
             </Sheet>
-            <Link href={'/'} className="hidden lg:flex mr-6">JOBPORTALCW</Link>
+            <Link href={'/'} className="hidden font-bold text-2xl lg:flex mr-6">JOBPORTALCW</Link>
             <nav className="ml-auto hidden lg:flex gap-6">
                 {
                     menuItems.map(menuItem => menuItem.show ?
