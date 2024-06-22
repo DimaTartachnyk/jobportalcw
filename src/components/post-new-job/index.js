@@ -6,8 +6,9 @@ import {useState} from "react";
 import CommonForm from "@/components/common-form";
 import {initialPostNewJobFormData, postNewJobFormControls} from "@/utils";
 import {postNewJobAction} from "@/actions";
+import { useToast } from "@/components/ui/use-toast"
 
-function PostNewJob({profileInfo, user}) {
+function PostNewJob({profileInfo, user, jobList}) {
     const [showJobDialog, setShowJobDialog] = useState(false);
     const [jobFormData, setJobFormData] = useState({
         ...initialPostNewJobFormData,
@@ -16,10 +17,24 @@ function PostNewJob({profileInfo, user}) {
 
     console.log(jobFormData)
 
+    const {toast} = useToast()
+
     function handlePostNewBtnValid() {
         return Object.keys(jobFormData).every(
             (control) => jobFormData[control] && jobFormData[control].trim() !== ""
         );
+    }
+
+    function handleAddNewJob(){
+        if (!profileInfo?.isPremiumUser && jobList.length >= 2) {
+            toast({
+                variant: "destructive",
+                title: "You can post max 2 jobs.",
+                description: "Please opt for membership to post more jobs",
+            });
+            return;
+        }
+        setShowJobDialog(true);
     }
 
     async function createNewJob(){
@@ -36,7 +51,7 @@ function PostNewJob({profileInfo, user}) {
     }
 
     return <div>
-        <Button onClick={() => setShowJobDialog(true)}
+        <Button onClick={handleAddNewJob}
                 className="disabled:opacity-60 flex h-11 items-center justify-center px-5">
             Post A Job
         </Button>

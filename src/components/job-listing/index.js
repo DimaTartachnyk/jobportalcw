@@ -73,7 +73,7 @@ function JobListing({user, profileInfo, jobList, jobApplications, filterCategori
                                                 className={`h-4 w-4 dark:border-white border rounded border-gray-900 ${
                                                     filterParams && Object.keys(filterParams).length > 0 &&
                                                     filterParams[filterMenu.id] && filterParams[filterMenu.id].indexOf(option) > -1
-                                                        ? "bg-black dark:bg-white" : "" } `}
+                                                        ? "bg-black dark:bg-white" : ""} `}
                                             />
                                             <Label
                                                 className="ml-3 dark:text-white cursor-pointer text-sm text-gray-600">{option}</Label>
@@ -83,7 +83,7 @@ function JobListing({user, profileInfo, jobList, jobApplications, filterCategori
                                     ))}
                                 </MenubarContent>
                             </MenubarMenu>))}
-                    </Menubar> : <PostNewJob user={user} profileInfo={profileInfo}/>}
+                    </Menubar> : <PostNewJob jobList={jobList} user={user} profileInfo={profileInfo}/>}
                 </div>
             </div>
             <div className="pt-6 pb-24">
