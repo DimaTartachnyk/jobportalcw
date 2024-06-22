@@ -44,7 +44,7 @@ export async function fetchJobsForCandidateAction(filterParams = {}) {
     await connectToDB();
     let updatedParams = {};
     Object.keys(filterParams).forEach((filterKey) => {
-        updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
+        updatedParams[filterKey] = {$in: filterParams[filterKey].split(",")};
     });
     console.log(updatedParams, "updatedParams");
     const result = await Job.find(filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {});
@@ -102,4 +102,38 @@ export async function createFilterCategoryAction() {
     const result = await Job.find({});
 
     return JSON.parse(JSON.stringify(result));
+}
+
+//update profile action
+export async function updateProfileAction(data, pathToRevalidate) {
+    await connectToDB();
+    const {
+        userId,
+        role,
+        email,
+        isPremiumUser,
+        memberShipType,
+        memberShipStartDate,
+        memberShipEndDate,
+        recruiterInfo,
+        candidateInfo,
+        _id,
+    } = data;
+
+    await Profile.findOneAndUpdate(
+        {_id: _id},
+        {
+            userId,
+            role,
+            email,
+            isPremiumUser,
+            memberShipType,
+            memberShipStartDate,
+            memberShipEndDate,
+            recruiterInfo,
+            candidateInfo,
+        },
+        {new: true}
+    );
+    revalidatePath(pathToRevalidate);
 }

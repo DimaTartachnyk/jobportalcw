@@ -101,19 +101,4 @@ export default Header;
 
 
 
-//Зробити коміт!!! "UpdateActivityPage&FilterOnJobsPage"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
