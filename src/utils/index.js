@@ -255,3 +255,21 @@ export function formUrlQuery({params, dataToAdd}) {
     );
 }
 
+
+export const membershipPlans = [
+    {
+        heading: "Low",
+        price: 100,
+        type: "basic",
+    },
+    {
+        heading: "Medium",
+        price: 1000,
+        type: "teams",
+    },
+    {
+        heading: "High",
+        price: 5000,
+        type: "enterprise",
+    },
+];
