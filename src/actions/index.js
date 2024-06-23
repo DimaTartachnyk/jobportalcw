@@ -4,6 +4,7 @@ import Profile from "@/models/profile";
 import {revalidatePath} from "next/cache";
 import Job from "@/models/job";
 import Application from "@/models/application";
+import Feed from "@/models/feed";
 
 const stripe =require("stripe")(
     "sk_test_51PUYbWCs15AoheAE9OwAlwgACvu21mWBc16AfvhwyUR4ex8LcNn8eVFdJmjVpRk3G5f5C67yPr5Xhnx8riLnifiq009okIQ5r4");
@@ -168,12 +169,48 @@ export async function createStripePaymentAction(data) {
         payment_method_types: ["card"],
         line_items: data?.lineItems,
         mode: "subscription",
-        success_url: "http://localhost:3000/membership" + "?status=success",
-        cancel_url: "http://localhost:3000/membership" + "?status=cancel",
+        success_url: `${process.env.URL}/membership` + "?status=success",
+        cancel_url: `${process.env.URL}/membership` + "?status=cancel",
     });
 
     return {
         success: true,
         id: session?.id,
     };
+}
+
+
+//create post action
+export async function createFeedPostAction(data, pathToRevalidate) {
+    await connectToDB();
+    await Feed.create(data);
+    revalidatePath(pathToRevalidate);
+}
+
+//fetch all posts action
+export async function fetchAllFeedPostsAction() {
+    await connectToDB();
+    const result = await Feed.find({});
+    return JSON.parse(JSON.stringify(result));
+}
+
+//update post action
+export async function updateFeedPostAction(data, pathToRevalidate) {
+    await connectToDB();
+    const { userId, userName, message, image, likes, _id } = data;
+    await Feed.findOneAndUpdate(
+        {
+            _id: _id,
+        },
+        {
+            userId,
+            userName,
+            image,
+            message,
+            likes,
+        },
+        { new: true }
+    );
+
+    revalidatePath(pathToRevalidate);
 }

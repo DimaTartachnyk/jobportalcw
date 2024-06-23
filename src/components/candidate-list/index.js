@@ -62,14 +62,14 @@ function CandidateList({
                     jobApplications && jobApplications.length > 0 ?
                         jobApplications.map((jobApplicantItem) => (
                             // eslint-disable-next-line react/jsx-key
-                            <div className="bg-white shadow-lg w-full max-w-sm rounded-lg overflow-hidden mx-auto mt-4">
+                            <div className="bg-white dark:bg-zinc-300 shadow-lg w-full max-w-sm rounded-lg overflow-hidden mx-auto mt-4">
                                 <div className="px-4 my-6 flex justify-between items-center">
                                     <h3 className="text-lg font-bold dark:text-black">
                                         {jobApplicantItem?.name}
                                     </h3>
                                     <Button
                                         onClick={() => handleFetchCandidateDetails(jobApplicantItem?.candidateUserID)}
-                                        className="dark:bg-[#fffa27]  flex h-11 items-center justify-center px-5"
+                                        className="dark:bg-zinc-900 dark:text-white  flex h-11 items-center justify-center px-5"
                                     >
                                         View Profile
                                     </Button>
@@ -108,20 +108,21 @@ function CandidateList({
                             {currentCandidateDetails?.candidateInfo?.noticePeriod} Days
                         </p>
                         <div className="flex items-center gap-4 mt-6">
-                            <h1 className="dark:text-white">Previous Companies</h1>
-                            <div className="flex flex-wrap items-center gap-4 mt-6">
+                         <div className="flex flex-wrap items-center gap-4 mt-6">
+                                Previous Companies:
                                 {currentCandidateDetails?.candidateInfo?.previousCompanies.split(",").map((skillItem) => (
                                     // eslint-disable-next-line react/jsx-key
                                     <div
                                         className="w-[100px] dark:bg-white flex justify-center items-center h-[35px] bg-black rounded-[4px]">
-                                        <h2 className="text-[13px]  dark:text-black font-medium text-white">
+                                        <h2 className="text-[13px] dark:text-black font-medium text-white">
                                             {skillItem}
                                         </h2>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className="flex flex-wrap gap-4 mt-6">
+                        <div className="flex flex-wrap gap-4 mt-6 items-center">
+                            Skills:
                             {currentCandidateDetails?.candidateInfo?.skills.split(",").map((skillItem) => (
                                 // eslint-disable-next-line react/jsx-key
                                 <div
@@ -134,12 +135,12 @@ function CandidateList({
                         </div>
                     </div>
                     <div className="flex gap-3">
-                        <Button onClick={handlePreviewResume} className=" flex h-11 items-center justify-center px-5">
+                        <Button onClick={handlePreviewResume} className=" flex h-11 dark:bg-zinc-300 dark:hover:bg-white items-center justify-center px-5">
                             Resume
                         </Button>
 
                         <Button onClick={() => handleUpdateJobStatus("selected")}
-                                className=" disabled:opacity-65 flex h-11 items-center justify-center px-5"
+                                className=" disabled:opacity-65 flex h-11 dark:bg-zinc-300 dark:hover:bg-white items-center justify-center px-5"
                             disabled={
                                 jobApplications.find((item) => item.candidateUserID === currentCandidateDetails?.userId)?.status.includes("selected") ||
                                 jobApplications.find((item) => item.candidateUserID === currentCandidateDetails?.userId)?.status.includes("rejected")
@@ -149,7 +150,7 @@ function CandidateList({
 
                         <Button
                             onClick={() => handleUpdateJobStatus("rejected")}
-                            className=" disabled:opacity-65 flex h-11 items-center justify-center px-5"
+                            className=" disabled:opacity-65 flex h-11 dark:bg-zinc-300 dark:hover:bg-white items-center justify-center px-5"
                             disabled={
                                 jobApplications.find((item) => item.candidateUserID === currentCandidateDetails?.userId)?.status.includes("selected") ||
                                 jobApplications.find((item) => item.candidateUserID === currentCandidateDetails?.userId)?.status.includes("rejected")

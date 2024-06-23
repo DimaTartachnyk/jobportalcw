@@ -52,7 +52,7 @@ function PostNewJob({profileInfo, user, jobList}) {
 
     return <div>
         <Button onClick={handleAddNewJob}
-                className="disabled:opacity-60 flex h-11 items-center justify-center px-5">
+                className="disabled:opacity-60 dark:bg-zinc-400 dark:hover:bg-zinc-100 flex h-11 items-center justify-center px-5">
             Post A Job
         </Button>
         <Dialog open={showJobDialog} onOpenChange={() => {

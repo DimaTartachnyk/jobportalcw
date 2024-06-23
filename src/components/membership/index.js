@@ -69,8 +69,8 @@ function Membership({profileInfo}) {
 
     return (
         <div className="mx-auto max-w-7xl">
-            <div className="flex items-baseline justify-between border-b pb-6 pt-24">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-950">
+            <div className="flex items-baseline dark:border-white justify-between border-b pb-6 pt-24">
+                <h1 className="text-4xl font-bold dark:text-white tracking-tight text-gray-950">
                     {
                         profileInfo?.isPremiumUser ? "You are a premium user" : "Choose Your Best Plan"
                     }
@@ -78,7 +78,7 @@ function Membership({profileInfo}) {
                 <div>
                     {
                         profileInfo?.isPremiumUser ? (
-                            <Button className="flex h-11 items-center justify-center px-5">
+                            <Button className="flex dark:bg-zinc-300 dark:hover:bg-white h-11 items-center justify-center px-5">
                                 {
                                     membershipPlans.find((planItem) => planItem.type === profileInfo?.memberShipType).heading
                                 }
@@ -96,7 +96,7 @@ function Membership({profileInfo}) {
                                             icon={
                                                 <div className="flex justify-between">
                                                     <div><JobIcon/></div>
-                                                    <h1 className="font-bold text-2xl">{plan.heading}</h1>
+                                                    <h1 className="dark:text-zinc-500 font-bold text-2xl">{plan.heading}</h1>
                                                 </div>
                                             }
                                             title={`$ ${plan.price}/year`}
@@ -108,7 +108,7 @@ function Membership({profileInfo}) {
                                                     null : (
                                                         <Button
                                                             onClick={() => handlePayment(plan)}
-                                                            className="flex h-11 items-center justify-center px-5">
+                                                            className="flex h-11 dark:bg-zinc-900 dark:text-white items-center justify-center px-5">
                                                             {
                                                                 profileInfo?.memberShipType === "basic" ||
                                                                 profileInfo?.memberShipType === "teams" ? "Update Plan" : "Get Premium"

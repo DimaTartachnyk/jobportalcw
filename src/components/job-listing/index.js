@@ -56,7 +56,7 @@ function JobListing({user, profileInfo, jobList, jobApplications, filterCategori
     return (<div>
         <div className="mx-auto max-w-7xl">
             <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                <h1 className="text-4xl font-bold dark:text-white tracking-tight text-gray-900">
                     {profileInfo?.role === "candidate" ? "Explore All Jobs" : "Jobs Dashboard"}
                 </h1>
                 <div className="flex items-center">
@@ -90,7 +90,7 @@ function JobListing({user, profileInfo, jobList, jobApplications, filterCategori
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
                     <div className="lg:col-span-4">
                         <div className="container mx-auto p-0 space-y-8 ">
-                            <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+                            <div className="grid grid-cols-1  gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
                                 {jobList && jobList.length > 0 ? jobList.map((jobItem) => profileInfo?.role === "candidate" ? (// eslint-disable-next-line react/jsx-key
                                     <CandidateJobCard profileInfo={profileInfo} jobItem={jobItem}
                                                       jobApplications={jobApplications}/>) : (// eslint-disable-next-line react/jsx-key

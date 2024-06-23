@@ -16,13 +16,13 @@ function HomepageButtonControls({user, profileInfo}) {
 
 
             <Button
-                className="flex h-11 items-center justify-center px-5"
+                className="flex h-11 dark:bg-zinc-400 dark:hover:bg-zinc-300 items-center justify-center px-5"
                 onClick={() => router.push("/jobs")}
             >
                 {user ? profileInfo?.role === "candidate" ? "Browse Jobs" : "Jobs Dashboard" : "Find Jobs"}
             </Button>
             <Button
-                className="flex h-11 items-center justify-center px-5"
+                className="flex h-11 dark:bg-zinc-400 dark:hover:bg-zinc-300 items-center justify-center px-5"
                 onClick={() => router.push(user ? profileInfo?.role === "candidate"
                     ? "/activity" : "/jobs" : "/jobs")}
             >
